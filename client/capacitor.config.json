@@ -1,0 +1,9 @@
+{
+  "appId": "app.focusnest.demo",
+  "appName": "專注小窩",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "http",
+    "cleartext": true
+  }
+}

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>專注小窩 手機／電腦對照</title>
+<style>
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:#DAD7D0;color:#37352F;font:14px/1.5 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;display:flex;flex-direction:column}
+.bar{flex:none;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 16px;background:#F7F6F3;border-bottom:1px solid #C9C5BD}
+.bar button,.bar select{font:inherit;font-size:13px;border:1px solid #C9C5BD;border-radius:6px;background:#fff;padding:4px 10px;color:inherit;cursor:pointer}
+.bar button.on{background:#37352F;color:#fff;border-color:#37352F}
+.bar a{font-size:13px;color:#2F6F5E}
+.grp{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+.stage{flex:1;min-height:0;display:flex;gap:28px;align-items:flex-start;justify-content:center;padding:14px 16px;overflow:auto}
+.col{display:flex;flex-direction:column;align-items:center}
+.col p{margin:0 0 6px;font-size:12.5px;font-weight:600;color:#57544E}
+.holder{position:relative}
+.dev{position:absolute;left:0;top:0;transform-origin:0 0;background:#141414;box-shadow:0 30px 60px -25px rgba(0,0,0,.5)}
+.dev iframe{border:0;background:#fff;display:block}
+.dev.phone{padding:11px;border-radius:44px}.dev.phone iframe{border-radius:34px}
+.dev.desktop{padding:0;border-radius:8px;border:1px solid #8E8A82}.dev.desktop iframe{border-radius:7px}
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>手機 ⇆ 電腦 對照</b>
+  <span class="grp" id="pages">
+    <button data-t="home">主頁</button><button data-t="tasks">任務</button><button data-t="plan">規劃</button><button data-t="equip">裝備</button><button data-t="group">群組</button><button data-t="settings">設定</button><button data-key="r">專注畫面</button>
+  </span>
+  <label>手機 <select id="ph"><option value="390|844">iPhone 14　390×844</option><option value="360|780">Galaxy S23　360×780</option><option value="375|667">iPhone SE　375×667</option><option value="430|932">Pro Max　430×932</option></select></label>
+  <label>電腦 <select id="dk"><option value="1440|900">1440×900</option><option value="1366|768">1366×768</option><option value="1920|1080">1920×1080</option><option value="1280|720">1280×720</option></select></label>
+  <span class="sp"></span>
+  <a href="/preview.html">逐一檢查所有機型 →</a>
+</div>
+<div class="stage" id="stage">
+  <div class="col"><p id="pl">手機</p><div class="holder" id="ph-h"><div class="dev phone" id="ph-d"><iframe id="ph-f" title="手機"></iframe></div></div></div>
+  <div class="col"><p id="dl">電腦</p><div class="holder" id="dk-h"><div class="dev desktop" id="dk-d"><iframe id="dk-f" title="電腦"></iframe></div></div></div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let tab = 'home';
+function size(sel){ return $(sel).value.split('|').map(Number); }
+function layout(){
+  const [pw, ph] = size('ph'), [dw, dh] = size('dk');
+  const availH = $('stage').clientHeight - 56, availW = $('stage').clientWidth - 28 - 56;
+  // 兩邊同樣的縮放比例，才看得出大小差多少
+  const s = Math.min(1, availH / Math.max(ph + 22, dh), availW / (pw + 22 + dw));
+  for(const [k, w, h, pad] of [['ph', pw, ph, 22], ['dk', dw, dh, 2]]){
+    $(k + '-f').style.width = w + 'px'; $(k + '-f').style.height = h + 'px';
+    $(k + '-d').style.transform = 'scale(' + s + ')';
+    $(k + '-h').style.width = Math.round((w + pad) * s) + 'px'; $(k + '-h').style.height = Math.round((h + pad) * s) + 'px';
+  }
+  $('pl').textContent = '手機　' + pw + '×' + ph + '　縮放 ' + Math.round(s * 100) + '%';
+  $('dl').textContent = '電腦　' + dw + '×' + dh + '　縮放 ' + Math.round(s * 100) + '%';
+}
+function load(){
+  layout();
+  for(const k of ['ph', 'dk']) $(k + '-f').src = '/?tab=' + tab + (k === 'ph' ? '&touch' : ''); // 手機那邊加 ?touch：假裝是觸控裝置，可以模擬轉橫向
+  document.querySelectorAll('#pages button[data-t]').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
+}
+$('pages').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.key){ // 專注畫面：兩邊都送 R
+    for(const k of ['ph', 'dk']) $(k + '-f').contentDocument.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'r', bubbles: true }));
+    return;
+  }
+  tab = b.dataset.t; load();
+});
+$('ph').addEventListener('change', load); $('dk').addEventListener('change', load);
+addEventListener('resize', layout);
+load();
+</script>
+</body>
+</html>

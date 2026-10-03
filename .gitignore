@@ -1,0 +1,46 @@
+# Dependencies and build outputs
+node_modules/
+dist/
+build/
+out/
+release*/
+desktop/app/
+*.apk
+*.aab
+*.asar
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.jks
+*.keystore
+google-services.json
+
+# Databases, backups, logs and user content
+*.db
+*.sqlite
+*.sqlite3
+server/backups/
+backups/
+uploads/
+*.log
+
+# Android local/generated files
+.gradle/
+local.properties
+client/android/capacitor-cordova-android-plugins/
+client/android/app/src/main/assets/public/
+client/android/app/src/main/assets/capacitor.config.json
+client/android/app/src/main/assets/capacitor.plugins.json
+client/android/app/src/main/res/xml/config.xml
+
+# Editor and system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.codex-build/
+

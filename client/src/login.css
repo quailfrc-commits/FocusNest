@@ -1,0 +1,29 @@
+/* 登入畫面：黃底、白色圓角卡片、橘色／綠色大按鈕（跟電腦版的新風格一致） */
+.lg{min-height:100vh;min-height:100dvh;background:#FFF1C2;display:grid;place-items:center;padding:24px 16px;color:#3B3226}
+.lg-box{width:min(420px,100%);display:grid;gap:12px;justify-items:center}
+.lg-pet{width:190px;height:170px}
+.lg-title{margin:0;font-family:"Chocolate Classical Sans","LXGW WenKai TC","Noto Sans TC",sans-serif;font-size:34px;line-height:1.2;color:#777;-webkit-text-stroke:.8px #777;letter-spacing:.08em}
+.lg-card{width:100%;background:#fff;border-radius:28px;padding:20px 22px 22px;display:grid;gap:12px}
+.lg-tabs{display:grid;grid-template-columns:1fr 1fr;border:2px solid #FFE9BE;border-radius:14px;overflow:hidden}
+.lg-tabs button{border:0;background:#fff;padding:9px;font-weight:700;font-size:15px;color:#7A6E58}
+.lg-tabs button.on{background:#FFDC55;color:#3B3226}
+.lg-field{display:grid;gap:4px;font-size:13px;color:#7A6E58;font-weight:600}
+.lg-field input{font:inherit;font-size:16px;border:2px solid #EFE3BD;border-radius:12px;padding:10px 12px;color:#3B3226;background:#FFFCF0;width:100%}
+.lg-field input:focus{outline:none;border-color:#FFB957;background:#fff}
+.lg-go{border:0;border-radius:14px;background:#FFB957;font-weight:800;font-size:17px;padding:12px;color:#2E2416}
+.lg-go:hover:not(:disabled){background:#F5A63A}
+.lg-demo{border:0;border-radius:14px;background:#5DBB63;color:#fff;font-weight:800;font-size:17px;padding:10px 12px;width:100%;display:grid;gap:2px}
+.lg-demo small{font-weight:400;font-size:12px;opacity:.9}
+.lg-demo:hover:not(:disabled){background:#4FA855}
+.lg-go:disabled,.lg-demo:disabled{opacity:.6}
+.lg-err{background:#FBE6E1;color:#B0392A;border-radius:10px;padding:8px 12px;font-size:13px;line-height:1.45}
+.lg-or{display:flex;align-items:center;gap:10px;color:#A89C80;font-size:12px}
+.lg-or::before,.lg-or::after{content:"";flex:1;height:1px;background:#EFE3BD}
+.lg-link{border:0;background:none;color:#7A6E58;text-decoration:underline;font-size:13px;padding:10px 4px}
+.lg-srv{width:100%;font-size:12.5px;color:#7A6E58}
+.lg-srv summary{cursor:pointer;display:flex;align-items:center;gap:6px;justify-content:center}
+.lg-srv .dot{width:8px;height:8px;border-radius:50%;background:#A89C80;display:inline-block}
+.lg-srv .dot.ok{background:#5DBB63}
+.lg-srv-row{display:flex;gap:6px;margin-top:8px}
+.lg-srv-row input{flex:1;min-width:0;font:inherit;font-size:13px;border:2px solid #EFE3BD;border-radius:10px;padding:7px 10px;background:#fff}
+.lg-srv-row button{border:0;border-radius:10px;background:#FFB957;font-weight:700;padding:0 14px}

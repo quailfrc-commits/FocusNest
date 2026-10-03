@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>專注小窩 版型預覽</title>
+<style>
+:root{color-scheme:light}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:#DAD7D0;color:#37352F;font:14px/1.5 "Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;display:flex;flex-direction:column}
+.bar{flex:none;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:10px 16px;background:#F7F6F3;border-bottom:1px solid #C9C5BD}
+.bar label{font-size:12px;color:#57544E;display:flex;gap:6px;align-items:center}
+.bar select,.bar input,.bar button{font:inherit;font-size:13px;border:1px solid #C9C5BD;border-radius:6px;background:#fff;padding:4px 8px;color:inherit}
+.bar input[type=number]{width:70px}
+.bar button{cursor:pointer}
+.bar button:hover{background:#EFEEEA}
+.bar button.on{background:#37352F;color:#fff;border-color:#37352F}
+.grp{display:flex;gap:4px;align-items:center}
+.sp{flex:1}
+.info{font-size:12.5px;color:#37352F;background:#fff;border:1px solid #C9C5BD;border-radius:6px;padding:4px 10px}
+.info b{font-weight:700}
+.stage{flex:1;min-height:0;display:grid;place-items:center;overflow:auto;padding:16px}
+.holder{position:relative}
+.dev{transform-origin:0 0;position:absolute;left:0;top:0;background:#141414;box-shadow:0 30px 60px -25px rgba(0,0,0,.5)}
+.dev iframe{border:0;background:#fff;display:block}
+.dev.phone{padding:11px;border-radius:44px}.dev.phone iframe{border-radius:34px}
+.dev.tablet{padding:14px;border-radius:30px}.dev.tablet iframe{border-radius:18px}
+.dev.desktop{padding:0;border-radius:8px;border:1px solid #8E8A82;background:#fff}.dev.desktop iframe{border-radius:8px}
+</style>
+</head>
+<body>
+<div class="bar">
+  <label>機型
+    <select id="dev">
+      <optgroup label="手機（直向）">
+        <option value="phone|280|653|Galaxy Z Fold 外螢幕">Galaxy Z Fold 外螢幕　280×653</option>
+        <option value="phone|320|568|iPhone 5／小螢幕">小螢幕手機　320×568</option>
+        <option value="phone|360|780|Galaxy S23">Galaxy S23　360×780</option>
+        <option value="phone|375|667|iPhone SE">iPhone SE　375×667</option>
+        <option value="phone|390|844|iPhone 14">iPhone 14　390×844</option>
+        <option value="phone|393|852|iPhone 15">iPhone 15　393×852</option>
+        <option value="phone|412|915|Pixel 8">Pixel 8　412×915</option>
+        <option value="phone|430|932|iPhone 15 Pro Max">iPhone 15 Pro Max　430×932</option>
+      </optgroup>
+      <optgroup label="平板（直向）">
+        <option value="tablet|744|1133|iPad mini">iPad mini　744×1133</option>
+        <option value="tablet|820|1180|iPad Air">iPad Air　820×1180</option>
+        <option value="tablet|1024|1366|iPad Pro 12.9">iPad Pro 12.9　1024×1366</option>
+      </optgroup>
+      <optgroup label="電腦／網頁">
+        <option value="desktop|1280|720|小筆電">小筆電　1280×720</option>
+        <option value="desktop|1366|768|筆電">筆電　1366×768</option>
+        <option value="desktop|1440|900|MacBook Air">MacBook Air　1440×900</option>
+        <option value="desktop|1920|1080|桌機">桌機　1920×1080</option>
+      </optgroup>
+      <optgroup label="切換點測試（1024px 以下手機版面、以上電腦版面）">
+        <option value="desktop|1023|768|差 1px 的手機版面">1023×768（手機版面的最寬）</option>
+        <option value="desktop|1024|768|剛好切到電腦版面">1024×768（電腦版面的最窄）</option>
+        <option value="desktop|1240|800|右側面板收起的邊界">1240×800（右側面板會收起）</option>
+        <option value="desktop|1241|800|右側面板出現的邊界">1241×800（右側面板出現）</option>
+      </optgroup>
+      <option value="custom|390|844|自訂">自訂尺寸…</option>
+    </select>
+  </label>
+  <span class="grp" id="customBox" hidden>
+    <label>寬<input type="number" id="cw" min="240" max="3000" value="390"></label>
+    <label>高<input type="number" id="ch" min="240" max="3000" value="844"></label>
+  </span>
+  <button id="rot" title="翻轉橫放／直放">⟲ 翻轉方向</button>
+  <label><input type="checkbox" id="fit" checked> 縮放到符合視窗</label>
+  <span class="grp" id="pages">
+    <button data-page="home">主頁</button><button data-page="tasks">任務</button><button data-page="plan">甘特圖／規劃</button><button data-page="equip">裝備</button><button data-page="group">群組</button>
+  </span>
+  <span class="grp" id="focusKeys">
+    <button data-key="r" title="橫放手機／結束專注">專注畫面</button><button data-key="p" title="拿起／放回手機">拿起警告</button><button data-key="f" title="快轉到這顆番茄結束">快轉</button>
+  </span>
+  <button id="reload">重新載入</button>
+  <span class="sp"></span>
+  <span class="info" id="info"></span>
+</div>
+<div class="stage" id="stage"><div class="holder" id="holder"><div class="dev phone" id="devbox"><iframe id="frame" src="/" title="預覽"></iframe></div></div></div>
+<script>
+const $ = id => document.getElementById(id);
+const frame = $('frame'), devbox = $('devbox'), holder = $('holder'), stage = $('stage');
+let cur = { type: 'phone', w: 390, h: 844, name: 'iPhone 14' }, rotated = false, scale = 1;
+const store = { get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set(k, v){ try{ localStorage.setItem(k, v); }catch(e){} } };
+
+function frameSize(){ const t = cur.type === 'custom' ? 'desktop' : cur.type; return rotated ? [cur.h, cur.w, t] : [cur.w, cur.h, t]; }
+function apply(){
+  const [w, h, t] = frameSize();
+  const pad = t === 'phone' ? 22 : t === 'tablet' ? 28 : 2;
+  frame.style.width = w + 'px'; frame.style.height = h + 'px';
+  devbox.className = 'dev ' + t;
+  const bw = w + pad, bh = h + pad;
+  let s = 1;
+  if($('fit').checked) s = Math.min(1, (stage.clientWidth - 32) / bw, (stage.clientHeight - 32) / bh);
+  devbox.style.transform = 'scale(' + s + ')';
+  holder.style.width = Math.round(bw * s) + 'px'; holder.style.height = Math.round(bh * s) + 'px';
+  scale = s; info();
+}
+function info(){
+  let layout = '—';
+  try{ layout = frame.contentDocument.querySelector('.screen.wide') ? '電腦版面（頂部分頁）' : frame.contentDocument.querySelector('.tabbar') ? '手機版面（底部分頁列）' : frame.contentDocument.querySelector('.focus') ? '專注畫面' : '—'; }catch(e){}
+  const [w, h] = frameSize();
+  $('info').innerHTML = cur.name + '　' + w + '×' + h + (rotated ? '（橫放）' : '') + '　縮放 ' + Math.round(scale * 100) + '%　→ <b>' + layout + '</b>';
+}
+/* 換尺寸後重新載入，等於在該尺寸的裝置上開啟，版面判斷最準確 */
+let rt;
+function relayout(){ apply(); clearTimeout(rt); rt = setTimeout(() => { try{ frame.contentWindow.location.reload(); }catch(e){} }, 150); }
+function pick(v){
+  const p = v.split('|'); cur = { type: p[0], w: +p[1], h: +p[2], name: p[3] };
+  $('customBox').hidden = p[0] !== 'custom';
+  if(p[0] === 'custom'){ cur.w = +$('cw').value; cur.h = +$('ch').value; }
+  store.set('preview-dev', v); relayout();
+}
+$('dev').addEventListener('change', e => { rotated = false; pick(e.target.value); });
+['cw', 'ch'].forEach(id => $(id).addEventListener('input', () => { cur.w = +$('cw').value || 390; cur.h = +$('ch').value || 844; relayout(); }));
+$('rot').addEventListener('click', () => { rotated = !rotated; $('rot').classList.toggle('on', rotated); relayout(); });
+$('fit').addEventListener('change', apply);
+$('reload').addEventListener('click', () => frame.contentWindow.location.reload());
+addEventListener('resize', apply);
+
+/* 切換頁面：寫入 App 記住的分頁再重新載入（手機和電腦版面用同一組分頁名稱） */
+$('pages').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  try{
+    const ls = frame.contentWindow.localStorage;
+    const ui = JSON.parse(ls.getItem('focusnest-ui') || '{}'); ui.tab = b.dataset.page;
+    if(b.dataset.page === 'plan') ui.plan = ui.plan || 'matrix';
+    ls.setItem('focusnest-ui', JSON.stringify(ui));
+  }catch(err){}
+  frame.contentWindow.location.reload();
+});
+/* 專注畫面：對 App 送出跟示範按鈕一樣的快捷鍵 R／P／F */
+$('focusKeys').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  frame.contentDocument.dispatchEvent(new KeyboardEvent('keydown', { key: b.dataset.key, bubbles: true }));
+  setTimeout(() => info(), 300);
+});
+frame.addEventListener('load', () => { info(); try{ new frame.contentWindow.ResizeObserver(() => info()).observe(frame.contentDocument.body); }catch(e){} });
+setInterval(() => info(), 700);
+
+const saved = store.get('preview-dev'); if(saved){ const o = [...$('dev').options].find(o => o.value === saved); if(o){ $('dev').value = saved; } }
+pick($('dev').value);
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "focusnest-desktop",
+  "productName": "FocusNest",
+  "version": "0.1.0",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-packager . FocusNest --platform=win32 --arch=x64 --out=release --overwrite --ignore=^/out --ignore=^/release"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "electron": "^44.4.5"
+  }
+}
