@@ -4,6 +4,8 @@ dist/
 build/
 out/
 release*/
+.release_check*/
+release/
 desktop/app/
 *.apk
 *.aab
