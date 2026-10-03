@@ -38,6 +38,10 @@ FocusNest/
 - PostgreSQL 17
 - Android 建置：JDK 21 與 Android SDK
 
+## 下載安裝包
+
+已清理敏感設定的 Android APK、Windows x64 壓縮包與 SHA-256 校驗值，請至 [v0.7-public Release](https://github.com/quailfrc-commits/FocusNest/releases/tag/v0.7-public) 下載。
+
 ## 安裝
 
 ```bash
@@ -115,7 +119,7 @@ npm run pack
 - 開發環境的區網 IP
 - 展示帳號的資料庫備份、登入 Token 與密碼雜湊
 - 使用者成果照片與問卷原始資料
-- APK、Windows 執行檔、`node_modules` 或其他建置產物
+- 儲存庫歷史中的 APK、Windows 執行檔、`node_modules` 或其他建置產物；公開安裝包僅透過 GitHub Releases 提供
 
 程式內的展示帳號與範例任務只供功能示範，不代表真實使用者資料。
 
