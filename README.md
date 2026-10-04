@@ -42,6 +42,8 @@ FocusNest/
 
 已清理敏感設定的 Android APK、Windows x64 壓縮包與 SHA-256 校驗值，請至 [v0.7-public Release](https://github.com/quailfrc-commits/FocusNest/releases/tag/v0.7-public) 下載。
 
+Release 內的 APK 與 Windows 壓縮包是前端用戶端。跨裝置同步、帳號資料與 Gemini 功能仍需另外啟動本儲存庫的 Node.js 後端、PostgreSQL，並自行設定 Gemini API Key；只下載用戶端不會自動取得雲端同步或 AI 功能。
+
 ## 安裝
 
 ```bash
@@ -125,7 +127,13 @@ npm run pack
 
 ## 技術驗證
 
-為避免把使用者感受與系統穩定性混在一起，技術驗證獨立記錄於 [`docs/technical-test-evidence.md`](docs/technical-test-evidence.md)。表內只填寫實際執行結果，不以展示資料代替測試數據。
+為避免把使用者感受與系統穩定性混在一起，GitHub 提供 [`docs/technical-test-evidence.md`](docs/technical-test-evidence.md) 空白測試範本。範本中的「待測／待填」不是已完成的測試結果，只有實際執行後才能填入數字。
+
+## 公開資料說明
+
+- [`docs/references.md`](docs/references.md)：競品比較與理論文獻來源
+- [`docs/versioning.md`](docs/versioning.md)：公開發行標籤、Android 原生版號與安裝包關係
+- [`docs/asset-notices.md`](docs/asset-notices.md)：美術素材來源與第三方授權範圍
 
 ## 競賽說明
 
